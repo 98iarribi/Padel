@@ -1,0 +1,19 @@
+[project]
+name = "Padel"
+version = "0.1.0"
+description = "Automate padel court booking to solve the problem of being unable to book a court"
+authors = [
+    {name = "Iñigo Arribillaga", email = "98iarribi@gmail.com"},
+]
+dependencies = []
+requires-python = ">=3.12"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true
