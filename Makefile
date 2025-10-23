@@ -3,3 +3,6 @@ add-dev:
 
 lint:
 	pdm run lint
+
+test:
+	pdm run pytest tests/

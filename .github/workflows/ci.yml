@@ -1,0 +1,30 @@
+name: Python CI (PDM)
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Setup pdm
+        run: python -m pip install --upgrade pip pdm
+
+      - name: Install dependencies with PDM
+        run: pdm install --with=dev
+
+      - name: Run lint
+        run: make lint
+
+      - name: Run tests
+        run: make test
