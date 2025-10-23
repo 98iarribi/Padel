@@ -1,4 +1,7 @@
-add-dev:
+make env-add:
+	pdm add ${pkgs}
+
+env-add-dev:
 	pdm add -dG test ${pkgs}
 
 lint:
