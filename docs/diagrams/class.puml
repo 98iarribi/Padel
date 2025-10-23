@@ -1,0 +1,62 @@
+@startuml padel-class-diagram
+class User {
+  - username: str
+  - password: str
+}
+
+class PadelCourt {
+  - number: int
+  - booking_slots: dict<TimeSlot, str>
+}
+
+enum TimeSlot {
+  - T_1730
+  - T_1900
+  - T_2030
+  - T_1830
+  - T_1930
+}
+
+class Booking {
+  - date: date
+  - court: PadelCourt
+  - slot: TimeSlot
+  - user: User
+}
+
+class PadelCourts {
+  - courts: List<PadelCourt>
+  + get_all_ids(): List<str>
+}
+
+class LoginScraper {
+  + login(user: User): bool
+}
+
+class BookingScraper {
+  + make_booking(booking: Booking): bool
+  + check_availability(court: PadelCourt, slot: TimeSlot, date: date): bool
+}
+
+class BookingService {
+  + login(user: User, scraper: LoginScraper): bool
+  + book(user: User, scraper: BookingScraper): bool
+}
+
+class "PolideportivoWebPage" <<external>> {
+    +login_url : String
+    +booking_url : String
+}
+
+BookingService "1" --> "1" LoginScraper : uses
+BookingService "1" --> "1" BookingScraper : uses
+User "1" --> "many" Booking : makes
+Booking "1" --> "1" PadelCourt
+Booking "1" --> "1" TimeSlot
+PadelCourts "1" --> "*" PadelCourt
+PadelCourts "1" --> "*" TimeSlot
+BookingScraper "1" --> "1" PadelCourts
+BookingScraper "1" --> "1" PolideportivoWebPage
+LoginScraper "1" --> "1" PolideportivoWebPage
+
+@enduml
