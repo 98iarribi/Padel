@@ -21,3 +21,7 @@ Then, add your user to the docker group:
 sudo usermod -aG docker $USER
 sudo su <your user>
 ```
+
+## Tests
+
+Install VSCode's Cucumer(gherkin) extension for acceptance tests (BDD)
