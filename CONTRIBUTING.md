@@ -33,3 +33,8 @@ Install the java runtime environment and graphviz tools, needed for rendering UM
 ```bash
 sudo apt install default-jre graphviz
 ```
+
+## Playwright
+
+This app uses playwright for automating web interaction.
+Python docs: https://playwright.dev/python/docs/api/class-playwright
