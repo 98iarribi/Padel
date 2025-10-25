@@ -25,3 +25,11 @@ sudo su <your user>
 ## Tests
 
 Install VSCode's Cucumer(gherkin) extension for acceptance tests (BDD)
+
+## PlantUML
+
+Install the java runtime environment and graphviz tools, needed for rendering UML diagrams with the plantuml extension in VSCode.
+
+```bash
+sudo apt install default-jre graphviz
+```
