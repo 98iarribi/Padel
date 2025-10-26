@@ -12,7 +12,7 @@ import os
 load_dotenv()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def page():
     class MockPage:
         url = ""
@@ -26,7 +26,6 @@ def test_successful_login_with_correct_credentials():
     """Successful login with correct credentials."""
 
 
-@pytest.mark.xfail(reason="To be implemented")
 @scenario("login.feature", "Unsuccessful login with incorrect credentials")
 def test_unsuccessful_login_with_incorrect_credentials():
     """Unsuccessful login with incorrect credentials."""
@@ -38,10 +37,19 @@ def _(page):
     page.url = "https://deportes.zizurmayor.es:8443/zonaabo.php"
 
 
+@pytest.mark.asyncio
 @when("the user enters invalid credentials")
-def _():
+async def _():
     """the user enters invalid credentials."""
-    raise NotImplementedError
+    browser = await async_playwright().start().firefox.launch(headless=True)
+    scraper: LoginScraper = await LoginScraper.create(browser=browser)
+    user = User(
+        username="any user",
+        password="any password",
+    )
+    result = await scraper.login(user=user)
+    page.url = result.url 
+    return page
 
 
 @pytest.mark.asyncio
