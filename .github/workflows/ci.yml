@@ -28,3 +28,6 @@ jobs:
 
       - name: Run tests
         run: make test
+        env:
+          POLIDEPORTIVO_USER: ${{ secrets.POLIDEPORTIVO_USER }}
+          POLIDEPORTIVO_PASSWORD: ${{ secrets.POLIDEPORTIVO_PASSWORD }}
