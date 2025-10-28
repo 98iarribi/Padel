@@ -5,7 +5,7 @@ description = "Automate padel court booking to solve the problem of being unable
 authors = [
     {name = "Iñigo Arribillaga", email = "98iarribi@gmail.com"},
 ]
-dependencies = ["black>=25.9.0", "playwright>=1.55.0", "pytest-asyncio>=1.2.0", "python-dotenv>=1.2.1", "loguru>=0.7.3"]
+dependencies = ["black>=25.9.0", "playwright>=1.55.0", "python-dotenv>=1.2.1", "loguru>=0.7.3"]
 requires-python = ">=3.12"
 readme = "README.md"
 license = {text = "MIT"}
