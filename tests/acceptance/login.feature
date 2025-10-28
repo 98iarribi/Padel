@@ -4,18 +4,18 @@ Feature: User login
     Given the user is in the login page
     When the user enters valid credentials
     Then the user is redirected to the index page
-    And the <event> by <user> is logged
+    And the <event> is logged
 
     Examples:
-      | event           | user  |
-      | login_succeeded | 025188 |
+      | event           |
+      | login_succeeded |
     
   Scenario: Unsuccessful login with incorrect credentials
     Given the user is in the login page
     When the user enters invalid credentials
     Then the user is not redirected to the index page
-    And the <event> by <user> is logged
+    And the <event> is logged
 
     Examples:
-      | event        | user |
-      | login_failed | any user |
+      | event        |
+      | login_failed |

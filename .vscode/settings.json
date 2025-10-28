@@ -3,6 +3,5 @@
         "tests"
     ],
     "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true,
-    "makefile.configureOnOpen": true
+    "python.testing.pytestEnabled": true
 }
