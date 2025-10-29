@@ -4,6 +4,9 @@ make env-add:
 env-add-dev:
 	pdm add -dG test ${pkgs}
 
+env-sync:
+	pdm sync
+
 lint:
 	pdm run lint
 
