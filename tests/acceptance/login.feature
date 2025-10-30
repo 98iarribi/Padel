@@ -8,7 +8,7 @@ Feature: User login
 
     Examples:
       | event           |
-      | login_succeeded |
+      | user_login |
     
   Scenario: Unsuccessful login with incorrect credentials
     Given the user is in the login page
@@ -18,4 +18,4 @@ Feature: User login
 
     Examples:
       | event        |
-      | login_failed |
+      | user_login |

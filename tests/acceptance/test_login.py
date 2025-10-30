@@ -1,13 +1,16 @@
 """User login feature tests."""
 
+import asyncio
 from pytest_bdd import given, scenario, then, when, parsers
 import pytest
-from padel.scraping.scrapers import LoginScraper, Page
+from padel.scraping.scrapers import LoginScraper
+from padel.utils import PadelLogger
 from padel.models.models import User
 
-from playwright.async_api import async_playwright
+from playwright.async_api import async_playwright, Page
 from dotenv import load_dotenv
 import os
+import json
 
 load_dotenv()
 
@@ -39,38 +42,51 @@ def _(page):
 
 @pytest.mark.asyncio
 @when("the user enters invalid credentials")
-async def _():
+def _():
     """the user enters invalid credentials."""
-    browser = await async_playwright().start().firefox.launch(headless=True)
-    scraper: LoginScraper = await LoginScraper.create(browser=browser)
-    user = User(
-        username="any user",
-        password="any password",
-    )
-    result = await scraper.login(user=user)
-    page.url = result.url 
-    return page
+
+    async def run():
+        async with async_playwright() as playwright:
+            browser = await playwright.firefox.launch(headless=True)
+            scraper: LoginScraper = await LoginScraper.create(browser=browser)
+            user = User(
+                username="any user",
+                password="any password",
+            )
+            result = await scraper.login(user=user)
+            page.url = result.url
+            return page
+
+    return asyncio.run(run())
 
 
 @pytest.mark.asyncio
 @when("the user enters valid credentials", target_fixture="page")
-async def _(page):
+def _(page):
     """the user enters valid credentials."""
-    browser = await async_playwright().start().firefox.launch(headless=True)
-    scraper: LoginScraper = await LoginScraper.create(browser=browser)
-    user = User(
-        username=os.getenv("POLIDEPORTIVO_USER"),
-        password=os.getenv("POLIDEPORTIVO_PASSWORD"),
-    )
-    result = await scraper.login(user=user)
-    page.url = result.url 
-    return page
+
+    async def run():
+        async with async_playwright() as p:
+            browser = await p.firefox.launch(headless=True)
+            scraper: LoginScraper = await LoginScraper.create(browser=browser)
+            user = User(
+                username=os.getenv("POLIDEPORTIVO_USER"),
+                password=os.getenv("POLIDEPORTIVO_PASSWORD"),
+            )
+            result = await scraper.login(user=user)
+            await result.wait_for_load_state("networkidle")
+            page.url = result.url
+            return page
+
+    return asyncio.run(run())
 
 
 @then(parsers.parse("the {event} is logged"))
 def _(event):
     """the <event> is logged."""
-    assert event in ("login_succeeded", "login_failed") # needs tweaking: logging is not implemented yet
+    with open(PadelLogger().log_file, "r", encoding="utf-8") as f:
+        log_line = json.loads(f.readlines()[-1])
+        assert log_line.get("event") == event
 
 
 @then("the user is not redirected to the index page")
@@ -81,6 +97,6 @@ def _(page):
 
 @pytest.mark.asyncio
 @then("the user is redirected to the index page")
-async def _(page):
+def _(page):
     """the user is redirected to the index page."""
     assert page.url == "https://deportes.zizurmayor.es:8443/index.php"

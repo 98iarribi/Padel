@@ -4,7 +4,9 @@ import sys
 
 
 class PadelLogger:
-    def __init__(self, log_file: str = "padel.log", console: bool = True, level: str = "INFO"):
+    def __init__(
+        self, log_file: str = "padel.log", console: bool = True, level: str = "INFO"
+    ):
         self.log_file = log_file
         self.console = console
         self.level = level
@@ -25,27 +27,30 @@ class PadelLogger:
     def _configure_logger(self):
         logger.remove()
         logger.add(self._json_sink, level=self.level, enqueue=True)
-        
+
         if self.console:
-            logger.add(sys.stdout, format="{time:YYYY-MM-DD HH:mm:ss} | {level} | {message}", level=self.level)
+            logger.add(
+                sys.stdout,
+                format="{time:YYYY-MM-DD HH:mm:ss} | {level} | {message}",
+                level=self.level,
+            )
 
         self._logger = logger
 
-
-    def info(self, message: str="", **kwargs):
+    def info(self, message: str = "", **kwargs):
         self._logger.bind(**kwargs).info(message)
 
-    def warning(self, message: str="", **kwargs):
+    def warning(self, message: str = "", **kwargs):
         self._logger.bind(**kwargs).warning(message)
 
-    def error(self, message: str="", **kwargs):
+    def error(self, message: str = "", **kwargs):
         self._logger.bind(**kwargs).error(message)
 
-    def debug(self, message: str="", **kwargs):
+    def debug(self, message: str = "", **kwargs):
         self._logger.bind(**kwargs).debug(message)
 
-    def critical(self, message: str="", **kwargs):
+    def critical(self, message: str = "", **kwargs):
         self._logger.bind(**kwargs).critical(message)
 
-    def exception(self, message: str="", **kwargs):
+    def exception(self, message: str = "", **kwargs):
         self._logger.bind(**kwargs).exception(message)
